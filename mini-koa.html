@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    function compose(middleware) {
+      return dispath(0)
+      function dispath(i) {
+        let fn = middleware[i]
+        if (!fn) return Promise.resolve()
+        try {
+          return Promise.resolve(fn(dispath.bind(null, i + 1)))
+        } catch (error) {
+          Promise.reject(error)
+        }
+      }
+    }
+    let fn1 = async next => {
+      console.log(1)
+      next()
+      console.log(6)
+    }
+    let fn2 = async next => {
+      console.log(2)
+      next()
+      console.log(5)
+    }
+    let fn3 = async next => {
+      console.log(3)
+      next()
+      console.log(4)
+    }
+    compose([fn1, fn2, fn3])
+
+    function add() {
+      let args = [...arguments]
+      let fn = function () {
+        return add.apply(null, args.concat([...arguments]))
+      }
+      fn.toString = () => args.reduce((a, b) => a + b)
+      return fn
+    }
+    console.log(add(1)(3, 4)(3, 5))
+    //================================
+    const deepCopy = obj => {
+      if (typeof obj === 'object') {
+        let result = obj.constructor === Array ? [] : {}
+        for (const i in obj) {
+          result[i] = typeof obj[i] === 'object' ? deepCopy(obj[i]) : obj[i]
+        }
+      } else {
+        let result = obj
+      }
+      return result
+    }
+  </script>
+</html>

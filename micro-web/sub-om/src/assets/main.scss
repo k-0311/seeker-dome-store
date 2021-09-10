@@ -1,0 +1,20 @@
+/* 文字超出省略 */
+@mixin line-clamp() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin line-clamp-multi($clamp: 2) {
+  display: -webkit-box;
+  word-break: break-all;
+  overflow: hidden;
+  -webkit-line-clamp: $clamp;
+  -webkit-box-orient: vertical;
+}
+
+@mixin flex-xy($x: center, $y: center) {
+  display: flex;
+  justify-content: $x;
+  align-items: $y;
+}

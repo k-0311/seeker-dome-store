@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    function isObject(val) {
+      return Object.prototype.toString.call(val).slice(8, -1) === 'Object'
+    }
+    function hasOwn(target, key) {
+      return Object.prototype.hasOwnProperty.call(target, key)
+    }
+
+    let toProxy = new WeakMap() // 原对象 : 代理过的对象
+    let toRaw = new WeakMap() // 代理过的对象:原对象
+
+    function reactive(target) {
+      return createReactiveObject(target)
+    }
+
+    function createReactiveObject(target) {
+      if (!isObject(target)) return target // 如果当前不是对象，直接返回即可
+
+      let proxy = toProxy.get(target)
+      if (proxy) return proxy // 如果已经代理过了，就直接返回代理过的结果
+
+      if (toRaw.has(target)) return target // 防止代理过的对象再次被代理
+
+      const baseHandler = {
+        get(target, key, receiver) {
+          // Reflect 是一个内置的对象，它提供拦截 JavaScript 操作的方法。这些方法与 proxy handlers 的方法相同。
+          let res = Reflect.get(target, key, receiver)
+
+          // 收集依赖/订阅 把当前的 key 和 effect 做映射关系
+          track(target, key)
+
+          //在get取值的时候才去判断该值是否是一个对象，如果是则递归（这里相比于Vue2中的默认递归，其实是一种优化）
+          return isObject(res) ? reactive(res) : res
+        },
+        set(target, key, value, receiver) {
+          let hasKey = hasOwn(target, key) // 这里需要区分是新增属性还是修改属性
+
+          let oldVal = target[key]
+          let res = Reflect.set(target, key, value, receiver)
+
+          if (!hasKey) {
+            console.log('新增属性')
+            trigger(target, 'add', key)
+          } else {
+            console.log('修改属性')
+            trigger(target, 'set', key)
+          }
+          return res
+        },
+        deleteProperty(target, key) {
+          const res = Reflect.deleteProperty(target, key)
+          return res
+        }
+      }
+
+      let observed = new Proxy(target, baseHandler)
+      toProxy.set(target, observed)
+      toRaw.set(observed, target)
+      return observed
+    }
+
+    let targetsMap = new WeakMap()
+    const activeEffectStacks = []
+
+    function track(target, key) {
+      // 拿出栈顶函数
+      let effect = activeEffectStacks[activeEffectStacks.length - 1]
+
+      if (effect) {
+        // 获取target对应依赖表
+        let depsMap = targetsMap.get(target)
+        if (!depsMap) targetsMap.set(target, (depsMap = new Map()))
+
+        // 获取key对应的响应函数集
+        let deps = depsMap.get(key)
+        // 动态创建依赖关系
+        if (!deps) depsMap.set(key, (deps = new Set()))
+
+        if (!deps.has(effect)) deps.add(effect)
+      }
+    }
+
+    function trigger(target, type, key) {
+      let depsMap = targetsMap.get(target)
+      if (depsMap) {
+        let deps = depsMap.get(key)
+        if (deps) {
+          // 将当前key对应的effect依次执行
+          deps.forEach(effect => {
+            effect()
+          })
+        }
+      }
+    }
+
+    function effect(fn) {
+      const rxEffect = function () {
+        try {
+          // 捕获异常
+          // 运行fn并将effect保存起来
+          activeEffectStacks.push(rxEffect)
+          return fn()//此时开始 track 收集依赖，将 effect 的 回调 和 对应的属性 关联上
+        } finally {
+          activeEffectStacks.pop()
+        }
+      }
+      // 默认应该先执行一次
+      rxEffect()
+      return rxEffect
+    }
+
+    let obj = reactive({ name: 'cosen' })
+    effect(() => {
+      console.log(obj.name)
+    })
+    obj.name = 'senlin'
+  </script>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "micro-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm-run-all --serial install:*",
+    "install:main": "cd main && yarn install",
+    "install:sub-vue": "cd sub-vue && yarn install",
+    "start": "npm-run-all --parallel start:*",
+    "start:sub-vue": "cd sub-vue && yarn serve",
+    "start:main": "cd main && yarn serve",
+    "build": "npm-run-all --serial build:*",
+    "build:main": "cd main && yarn build",
+    "build:sub-vue": "cd sub-vue && yarn build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

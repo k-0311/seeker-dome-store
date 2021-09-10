@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    let tree = [
+      {
+        id: '1',
+        title: '节点1',
+        children: [
+          {
+            id: '1-1',
+            title: '节点1-1'
+          },
+          {
+            id: '1-2',
+            title: '节点1-2'
+          }
+        ]
+      },
+      {
+        id: '2',
+        title: '节点2',
+        children: [
+          {
+            id: '2-1',
+            title: '节点2-1'
+          }
+        ]
+      }
+    ]
+
+    function treeForeach(tree) {
+      let node
+      let list = [...tree]
+      while ((node = list.shift())) {
+        console.log(node.title)
+        node.children && list.push(...node.children)
+      }
+    }
+
+    treeForeach(tree)
+    console.log('===============================')
+
+    function treeDeep(tree) {
+      tree.forEach(data => {
+        console.log(data.title)
+        data.children && treeDeep(data.children)
+        // console.log(data.title)
+      })
+    }
+    treeDeep(tree)
+
+    function treeWhileDeep(tree) {
+      let node
+      let list = [...tree]
+      while ((node = list.shift())) {
+        console.log(node.title)
+        node.children && list.unshift(...node.children)
+      }
+    }
+    console.log('=================================')
+    treeWhileDeep(tree)
+    console.log('=================================')
+    let list = [
+      {
+        id: '1',
+        title: '节点1',
+        parentId: ''
+      },
+      {
+        id: '1-1',
+        title: '节点1-1',
+        parentId: '1'
+      },
+      {
+        id: '1-2',
+        title: '节点1-2',
+        parentId: '1'
+      },
+      {
+        id: '2',
+        title: '节点2',
+        parentId: ''
+      },
+      {
+        id: '2-1',
+        title: '节点2-1',
+        parentId: '2'
+      }
+    ]
+
+    //O(2n)
+    function listToTree(list) {
+      let info = list.reduce(
+        (map, node) => ((map[node.id] = node), (node.children = []), map),
+        {}
+      )
+      return list.filter(node => {
+        info[node.parentId] && info[node.parentId].children.push(node)
+        return !node.parentId
+      })
+    }
+    console.log(listToTree(list))
+    console.log('=================================')
+    function treeToList(tree, result = [], lv = 0) {
+      tree.forEach(node => {
+        result.push(node)
+        node.lv = lv + 1
+        node.children && treeToList(node.children, result, node.lv)
+      })
+      return result
+    }
+    console.log(treeToList(listToTree(list)))
+    console.log('=================================')
+    function treeFind(tree, func) {
+      for (const data of tree) {
+        if (func(data)) return data
+        if (data.children) {
+          const res = treeFind(data.children, func)
+          if (res) return res
+        }
+      }
+      return null
+    }
+    console.log('=================================')
+    function treeFindPath(tree, func = node => node.id === '1-2', path = []) {
+      if (!tree) return []
+      for (const data of tree) {
+        path.push(data.id)
+        if (func(data)) return path
+        if (data.children) {
+          const findChildren = treeFindPath(data.children, func, path)
+          if (findChildren.length) return findChildren
+        }
+        path.pop()
+      }
+      return []
+    }
+    console.log(treeFindPath(tree))
+    console.log('=================================')
+    function treeFindMultiPath(tree, func, path = [], result = []) {
+      if (!tree) return []
+      for (const node of tree) {
+        path.push(node.id)
+        func(node) && result.push([...path])
+        node.children && treeFindMultiPath(node.children, func, path, result)
+        path.pop()
+      }
+      return result
+    }
+    console.log(
+      treeFindMultiPath(tree, node => ['1-2', '2-1'].includes(node.id))
+    )
+  </script>
+</html>

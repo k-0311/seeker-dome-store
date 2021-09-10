@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body></body>
+  <script>
+    let urls = Array.from({ length: 10 }, (u, i) => i)
+    const reqFn = url => {
+      return new Promise((resolve, reject) => {
+        let time = Math.random() * 7000
+        setTimeout(() => {
+          console.log(`请求${url}耗时：${(time / 1000).toFixed(2)}s`)
+          resolve(`fq${url}`)
+        }, Math.random() * 7000)
+      })
+    }
+    const multiRequestXXX = (urls, max) => {
+      const ret = []
+      let i = 0
+      let resolve
+      const promise = new Promise(r => (resolve = r))
+      const addTask = () => {
+        if (i >= arr.length) {
+          return resolve()
+        }
+        const task = request(urls[i++]).finally(() => {
+          addTask()
+        })
+        ret.push(task)
+      }
+      while (i < max) {
+        addTask()
+      }
+      return promise.then(() => Promise.all(ret))
+    }
+
+    const multiRequest = (urls, maxNum = 3) => {
+      let i = 0
+      const result = [] // 完成集合
+      const executing = [] // 执行集合
+
+      const enqueue = () => {
+        if (urls.length === i) return Promise.resolve() // 判断是否全部执行完
+
+        const p = Promise.resolve().then(() => reqFn(urls[i++]))
+        result.push(p)
+
+        const e = p.then(() => executing.splice(0, 1)) // 执行完从executin中剔除一个
+        executing.push(e)
+
+        let r = Promise.resolve()
+        if (executing.length >= maxNum) {
+          // 判断executing中的长度是否大于等于限制数maxNum
+          r = Promise.race(executing)
+        }
+        return r.then(() => enqueue()) // 当 r = Promise.race 时会等到其中一个执行完才执行下一步
+      }
+
+      return enqueue().then(() => Promise.all(result)) //全部执行完按顺序返回
+    }
+    // multiRequest(urls).then(res => console.log('res', res))
+
+    //==================================================================
+    let reqs = Array.from(
+      { length: 10 },
+      (_, i) => () =>
+        new Promise((resolve, reject) => {
+          let time = Math.random() * 7000
+          setTimeout(() => {
+            console.log(`请求${i + 1}耗时：${time}`)
+            resolve()
+          }, time)
+        })
+    )
+    function test(reqs, limit = 3) {
+      let exec = 0
+      let i = 0
+      const qeeue = () => {
+        if (exec > limit || i == reqs.length) return
+        exec++
+        console.log(
+          '当前并发数：' + exec,
+          '等待req数量:' + (reqs.length - (i + 1))
+        )
+        reqs[i++]().then(() => {
+          exec--
+          qeeue()
+        })
+      }
+      for (let idx = 0; idx < limit; idx++) {
+        qeeue()
+      }
+    }
+    // test(reqs)
+    const multiReq = (urls, max = 5) => {
+      const len = urls.length
+      const result = new Array(len).fill(false)
+      let count = 0
+
+      return new Promise((resolve, reject) => {
+        while (count <= max) {
+          next()
+        }
+        const next = () => {
+          let curr = count++
+          if (curr >= len) {
+            !result.includes(false) && resolve(result)
+            return
+          }
+          const url = urls[curr]
+          console.log(`开始 ${current}`, new Date().toLocaleString())
+          fetch(url)
+            .then(res => {
+              result[curr] = res
+            })
+            .catch(err => {
+              result[curr] = err
+            })
+            .finally(() => {
+              console.log(`完成 ${current}`, new Date().toLocaleString())
+              if (curr < len) {
+                next()
+              }
+            })
+        }
+      })
+    }
+    //==================================================================
+    class Queue {
+      constructor() {
+        this._queue = []
+      }
+      push(value) {
+        return this._queue.push(value)
+      }
+      shift() {
+        return this._queue.shift()
+      }
+      isEmpty() {
+        return this._queue.length === 0
+      }
+    }
+
+    class HightPreformanceQueue {
+      constructor() {
+        this.q1 = [] //push 数据
+        this.q2 = [] //shift 数据
+      }
+      push(value) {
+        return this.q1.push(value)
+      }
+      shift() {
+        let q2 = this.q2
+        if (q2.length === 0) {
+          const q1 = this.q1
+          if (q1.length === 0) return
+          this.q1 = q2 //q1置空，后续新增的数据不影响现有的q2，当q2全部出栈后将新的q1重新赋值
+          q2 = this.q2 = q1.reverse()
+        }
+        return q2.pop()
+      }
+      isEmpty() {
+        return this.q1.length === 0 && this.q2.length === 0
+      }
+    }
+
+    class DelayedTask {
+      constructor(resolve, fn, args) {
+        this.fn = fn
+        this.args = args
+        this.resolve = resolve
+      }
+    }
+
+    class TaskPool {
+      constructor(size) {
+        this.size = size
+        this.queue = new Queue()
+      }
+
+      //await Promise.all(taskList.map(cc.addTask(task)))  高阶函数参数自动透传
+      addTask(fn) {
+        return (...args) => {
+          return new Promise(resolve => {
+            this.queue.push(new DelayedTask(resolve, fn, args))
+            if (this.size) {
+              this.size--
+              const {
+                resolve: taskResole,
+                fn: taskFn,
+                args: taskArgs
+              } = this.queue.shift()
+              taskResole(this.runTask(taskFn, taskArgs))
+            }
+          })
+        }
+      }
+
+      pullTask() {
+        if (this.queue.isEmpty() || this.size === 0) return
+        this.size++
+        const { resolve, fn, args } = this.queue.shift()
+        resolve(this.runTask(fn, args))
+      }
+      runTask(fn, args) {
+        const result = Promise.resolve(fn(...args))
+        result
+          .then(() => {
+            this.size--
+            this.pullTask()
+          })
+          .catch(() => {
+            this.size--
+            this.pullTask()
+          })
+        return result
+      }
+    }
+  </script>
+</html>

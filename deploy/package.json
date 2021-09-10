@@ -1,0 +1,61 @@
+{
+  "_from": "xdd-deploy",
+  "_id": "xdd-deploy@1.1.6",
+  "_inBundle": false,
+  "_integrity": "sha512-xtjj6AcYJoslLeLUy+3/E885oIoYMsblZN8Y6Qsi1999JntRNEz0xuAl7x44FSTVwiIjhNXJCjIwP8017ld21w==",
+  "_location": "/xdd-deploy",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "xdd-deploy",
+    "name": "xdd-deploy",
+    "escapedName": "xdd-deploy",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "http://192.168.239.57:4873/xdd-deploy/-/xdd-deploy-1.1.6.tgz",
+  "_shasum": "5f2697c2e5f8113a5361008b4b01cddc64071a37",
+  "_spec": "xdd-deploy",
+  "_where": "C:\\Users\\hongyinhao",
+  "author": {
+    "name": "xdd"
+  },
+  "bin": {
+    "xdd": "bin/index.js"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "archiver": "^3.1.1",
+    "axios": "^0.19.2",
+    "chalk": "^3.0.0",
+    "commander": "^4.1.0",
+    "download-git-repo": "^3.0.2",
+    "inquirer": "^7.0.3",
+    "node-ssh": "^7.0.0",
+    "ora": "^4.0.3",
+    "semver": "^7.1.1"
+  },
+  "deprecated": false,
+  "description": "km deploy.",
+  "engines": {
+    "node": ">=9.0.0"
+  },
+  "keywords": [
+    "web",
+    "node-ssh",
+    "deploy"
+  ],
+  "license": "ISC",
+  "name": "xdd-deploy",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "version": "1.1.6"
+}

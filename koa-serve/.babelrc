@@ -1,0 +1,13 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": { "node": true },
+        //会加载所有polyfill
+        "useBuiltIns": true
+      }
+    ]
+  ],
+  "plugins": ["transform-decorators-legacy"]
+}
