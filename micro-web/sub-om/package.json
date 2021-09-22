@@ -1,24 +1,22 @@
 {
-  "name": "sub-om",
+  "name": "sub-om-y",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "ana": "cross-env NODE_ENV=analyzer vue-cli-service build"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "core-js": "^3.16.1",
-    "element-plus": "^1.0.2-beta.71",
+    "axios": "^0.21.4",
+    "core-js": "^3.6.5",
     "faker": "^5.5.3",
     "lz-string": "^1.4.4",
     "pako": "^2.0.4",
     "uuid": "^8.3.2",
-    "vue": "^3.2.2",
+    "vue": "^3.0.0",
     "vue-count-to": "^1.0.13",
-    "vue-router": "^4.0.11",
+    "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
@@ -27,14 +25,24 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.2.2",
+    "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.16.0",
-    "sass": "^1.37.5",
+    "eslint-plugin-vue": "^7.0.0",
+    "lint-staged": "^9.5.0",
+    "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "speed-measure-webpack-plugin": "^1.5.0",
     "webpack-bundle-analyzer": "^4.4.2"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
   }
 }
