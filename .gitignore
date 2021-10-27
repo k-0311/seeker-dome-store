@@ -1,0 +1,5 @@
+*/node_modules
+*/dist
+Fe2O3/*/target
+Fe2O3/*/src/*
+!Fe2O3/*/src/*.rs
