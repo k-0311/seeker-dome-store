@@ -3,6 +3,7 @@ import { N1, V2, T3 } from './auth';
 export const basicRoutes = [
   { path: '/', name: 'home', component: () => import(/* webpackChunkName: "home" */ '@/views/home') },
   { path: '/about', name: 'about', component: () => import(/* webpackChunkName: "about" */ '@/views/about') },
+  { path: '/model', name: 'model', component: () => import(/* webpackChunkName: "model" */ '@/views/model') }
 ];
 
 const RouteN1 = [

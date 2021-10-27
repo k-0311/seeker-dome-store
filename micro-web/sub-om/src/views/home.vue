@@ -15,8 +15,8 @@ export default {
     HelloWorld,
   },
   setup () {
-    const logFn = () => {
-      // navigator.sendBeacon('/', { a: 1, b: 2 }) //详情见MDN [https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon]
+    const logFn = (url, data) => {
+      // navigator.sendBeacon(url, data) //详情见MDN [https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon]
     }
 
     onMounted(() => {

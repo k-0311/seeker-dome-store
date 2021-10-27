@@ -26,8 +26,20 @@ export default {
     },
   },
   setup () {
+    const NETWORK_STATUS = {
+      OFFLINE: 'offline',
+      ONLINE: 'online'
+    }
+    const STATUS_METHODS = {
+      [NETWORK_STATUS.OFFLINE] () {
+        console.log('%ccheck your network connection', 'color:#f40')
+      },
+      [NETWORK_STATUS.ONLINE] () {
+        console.log('%cnetwork is back to normal', 'color:#3FB87D')
+      }
+    }
     const eventHandle = event => {
-      console.log(`network state %c${event.type}`, 'color:#f40')
+      STATUS_METHODS[event.type]()
     }
     const network = () => {
       if (!navigator?.connection) return

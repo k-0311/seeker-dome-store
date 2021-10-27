@@ -4,7 +4,7 @@
     <div v-permission="'C'">C</div>
     <div v-permission="'V'">V</div>
     <div v-permission="'R'">R</div>
-    <component :is="name" v-for="name in clist" :key="name"></component>
+    <!-- <component :is="name" v-for="name in clist" :key="name"></component> -->
   </div>
 </template>
 
@@ -12,13 +12,7 @@
 import { onMounted } from 'vue';
 import pako from 'pako'
 import LZString from 'lz-string'
-import aaa from 'components/aaa';
-import bbb from 'components/bbb';
 export default {
-  components: {
-    aaa,
-    bbb
-  },
   setup () {
     onMounted(() => { })
     const lz78 = str => LZString.compress(encodeURIComponent(str))
@@ -33,7 +27,10 @@ export default {
       return decodeURIComponent(strData)
     }
     return {
-      clist: ['aaa', 'bbb']
+      lz78,
+      deLz78,
+      gzip,
+      deGzip
     }
   }
 }

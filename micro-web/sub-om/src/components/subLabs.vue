@@ -1,8 +1,10 @@
 <template>
-  <div @click="$emit('update:nutone', Math.random())">
-    <div>this is sub labs provide/inject: {{outfit}}</div>
-    <div :class="myclass" :style="mystyle">aaaaaaaa</div>
-  </div>
+  <solt>
+    <div @click="$emit('update:nutone', Math.random())">
+      <div>this is sub labs provide/inject: {{outfit}}</div>
+      <div :class="myclass" :style="mystyle">aaaaaaaa</div>
+    </div>
+  </solt>
 </template>
 
 <script>

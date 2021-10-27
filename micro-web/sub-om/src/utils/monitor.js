@@ -3,7 +3,7 @@
   const vEvent = document.webkitHidden != undefined ? 'webkitvisibilitychange' : 'visibilitychange';
   function visibilityChanged () {
     if (document.hidden || document.webkitHidden) {
-      document.title = 'fuck tr and vs'
+      document.title = 'sometime'
       // console.log("Web page is hidden.")
     } else {
       document.title = 'united until death'
