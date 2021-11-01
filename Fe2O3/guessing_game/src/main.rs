@@ -10,11 +10,14 @@ fn main() {
             .expect("failed to read line");
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_) => continue,
+            Err(err) => {
+                println!("{}", err);
+                continue;
+            }
         };
         println!("you guessed: {}", guess);
 
-        // match表达式，匹配方法返回的所有'分支'，根据命中的'分支'执行对应的代码，类似 JS 中的 switch表达式 
+        // match表达式，匹配方法返回的所有'分支'，根据命中的'分支'执行对应的代码，类似 JS 中的 switch表达式
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("to samll!"),
             Ordering::Equal => {
