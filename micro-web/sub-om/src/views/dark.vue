@@ -1,40 +1,22 @@
 <template>
-  <div>
-    <picture>
-      <source media="(min-width: 600px)" srcset="">
-      <img src="" alt="">
-    </picture>
-    <div class="loading" @click="loading"></div>
+  <div class="fold-card">
+    
   </div>
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
 export default {
   setup () {
-    const instance = getCurrentInstance()
     return {
-      loading () {
-        console.trace()
-        instance.appContext.config.globalProperties.$loading({ title: 'aaaaaaaa' })
-      }
+      list: Array.from({ length: 8 }, (_, i) => ({ label: '客户', value: i }))
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-:root {
-  color-scheme: light dark;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-  }
-}
-.loading {
-  margin: 0 auto;
-  width: 100px;
-  height: 100px;
-  background-color: orange;
+.fold-card {
+  background: pink;
+  box-shadow: 0px 6px 12px 0px #d7e2f1;
 }
 </style>

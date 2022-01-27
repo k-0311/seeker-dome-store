@@ -16,7 +16,8 @@ const RouteK2 = [
   { path: '/online', name: 'online', auth: V2, component: () => import(/* webpackChunkName: "online" */ '@/views/online') },
 ]
 const RouteT3 = [
-  { path: '/dark', name: 'dark', auth: T3, component: () => import(/* webpackChunkName: "dark" */ '@/views/dark') }
+  { path: '/dark', name: 'dark', auth: T3, component: () => import(/* webpackChunkName: "dark" */ '@/views/dark') },
+  { path: '/capsule', name: 'capsule', auth: T3, component: () => import(/* webpackChunkName: "capsule" */ '@/views/capsule') }
 ]
 
 export const dynamicRoutes = [...RouteN1, ...RouteK2, ...RouteT3]
