@@ -26,9 +26,41 @@ fn filters_by_size() {
         },
     ];
     let in_my_size = shoes_in_my_size(shoes, 11);
-    assert_eq!(in_my_size,
-        vec![
-          Shoe {size: 11,style: String::from("bbb")}
-        ]
-    ); 
+    assert_eq!(
+        in_my_size,
+        vec![Shoe {
+            size: 11,
+            style: String::from("bbb")
+        }]
+    );
+}
+
+struct Counter {
+    count: u32,
+}
+impl Counter {
+    fn new() -> Counter {
+        Counter { count: 0 }
+    }
+}
+impl Iterator for Counter {
+    type Item = u32;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.count += 1;
+        if self.count < 6 {
+            Some(self.count)
+        } else {
+            None
+        }
+    }
+}
+
+#[test]
+fn calling_next() {
+    let sum: u32 = Counter::new()
+        .zip(Counter::new().skip(1))
+        .map(|(a, b)| a * b)
+        .filter(|x| x % 3 == 0)
+        .sum();
+    assert_eq!(sum, 18);
 }
