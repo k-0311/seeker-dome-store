@@ -1,6 +1,13 @@
 <template>
   <div class="positon cap">
     <div class="color">
+      <span>200</span>
+    </div>
+  </div>
+
+  <div class="positon cap">
+    <div class="color aaa">
+      <span>200</span>
     </div>
   </div>
 </template>
@@ -30,16 +37,19 @@ export default {
   overflow: hidden;
 }
 .color {
-  width: 100%;
+  width: 50%;
   line-height: 20px;
   color: #fff;
   text-align: right;
   box-sizing: border-box;
   background: linear-gradient(90deg, #3b8bff 0%, #37b2ff 100%);
   border-radius: 4px;
-  transition: transform 0.5s;
+  transition: width 0.5s;
   span {
     padding-right: 8px;
   }
+}
+.aaa {
+  width: 100%;
 }
 </style>
