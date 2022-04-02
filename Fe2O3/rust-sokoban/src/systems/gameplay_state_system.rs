@@ -14,6 +14,22 @@ impl<'a> System<'a> for GameplayStateSystem {
         ReadStorage<'a, BoxSpot>,
     );
     fn run(&mut self, data: Self::SystemData) {
-      
+        let (mut gameplay_state, positions, boxs, box_spots) = data;
+        let boxes_by_position: HashMap<(u8, u8), &Box> = (&positions, &boxs)
+            .join()
+            .map(|t| ((t.0.x, t.0.y), t.1))
+            .collect::<HashMap<_, _>>();
+        for (box_spot, position) in (&box_spots, &positions).join() {
+            if let Some(the_box) = boxes_by_position.get(&(position.x, position.y)) {
+                if the_box.colour == box_spot.colour {
+                } else {
+                    return;
+                }
+            } else {
+                gameplay_state.state = GameplayState::Playing;
+                return;
+            }
+        }
+        gameplay_state.state = GameplayState::Won;
     }
 }

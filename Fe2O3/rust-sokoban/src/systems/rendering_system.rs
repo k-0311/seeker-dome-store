@@ -1,23 +1,56 @@
+use std::time::Duration;
 
-
-use crate::components::*;
 use crate::constants::TILE_WIDTH;
+use crate::resources::Time;
+use crate::{components::*, resources::Gameplay};
 
-use ggez::{Context, graphics::{self, DrawParam, Image}};
-use specs::{Join, ReadStorage, System};
+use ggez::{
+    graphics::{self, Color, DrawParam, Image},
+    Context,
+};
 use glam::Vec2;
+use specs::{Join, Read, ReadStorage, System};
 
 pub struct RenderingSystem<'a> {
     pub context: &'a mut Context,
 }
 
+impl RenderingSystem<'_> {
+    pub fn draw_text(&mut self, text_string: &str, x: f32, y: f32) {
+        let text = graphics::Text::new(text_string);
+        let destination = Vec2::new(x, y);
+        let color = Some(Color::new(0.0, 0.0, 0.0, 1.0));
+        let dimensions = Vec2::new(0.0, 20.0);
+        graphics::queue_text(self.context, &text, dimensions, color);
+        graphics::draw_queued_text(
+            self.context,
+            graphics::DrawParam::new().dest(destination),
+            None,
+            graphics::FilterMode::Linear,
+        )
+        .expect("expected drawing queued text");
+    }
+    pub fn get_image(&mut self, renderable: &Renderable, delta: Duration) -> Image {
+        let path_index = match renderable.kind() {
+            RenderableKind::Static => 0,
+            RenderableKind::Animated => ((delta.as_millis() % 1000) / 250) as usize,
+        };
+        let image_path = renderable.path(path_index);
+        Image::new(self.context, image_path).expect("expected image")
+    }
+}
 // System implementation
 impl<'a> System<'a> for RenderingSystem<'a> {
     // Data
-    type SystemData = (ReadStorage<'a, Position>, ReadStorage<'a, Renderable>);
+    type SystemData = (
+        Read<'a, Gameplay>,
+        Read<'a, Time>,
+        ReadStorage<'a, Position>,
+        ReadStorage<'a, Renderable>,
+    );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (positions, renderables) = data;
+        let (gameplay, time, positions, renderables) = data;
 
         // Clearing the screen (this gives us the backround colour)
         graphics::clear(self.context, graphics::Color::new(0.95, 0.95, 0.95, 1.0));
@@ -31,7 +64,7 @@ impl<'a> System<'a> for RenderingSystem<'a> {
         // and draw it at the specified position.
         for (position, renderable) in rendering_data.iter() {
             // Load the image
-            let image = Image::new(self.context, renderable.path.clone()).expect("expected image");
+            let image = self.get_image(renderable, time.delta);
             let x = position.x as f32 * TILE_WIDTH;
             let y = position.y as f32 * TILE_WIDTH;
 
@@ -40,6 +73,8 @@ impl<'a> System<'a> for RenderingSystem<'a> {
             graphics::draw(self.context, &image, draw_params).expect("expected render");
         }
 
+        self.draw_text(&gameplay.state.to_string(), 525.0, 80.0);
+        self.draw_text(&gameplay.moves_count.to_string(), 525.0, 100.0);
         // Finally, present the context, this will actually display everything
         // on the screen.
         graphics::present(self.context).expect("expected to present");
