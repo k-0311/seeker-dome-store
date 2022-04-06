@@ -1,4 +1,4 @@
-use std::path::Component;
+// use std::path::Component;
 
 pub trait Draw {
     fn draw(&self);

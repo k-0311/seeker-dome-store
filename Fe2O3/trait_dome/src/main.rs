@@ -28,7 +28,7 @@ fn main() {
 
     println!("New article available! {}", article.summarize());
 
-    pub fn notify(item: impl Summary) {
+    pub fn _notify(item: impl Summary) {
         println!("{}", item.summarize())
     }
 
