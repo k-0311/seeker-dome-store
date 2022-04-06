@@ -2,3 +2,5 @@
 */dist
 Fe2O3/*/target
 !Fe2O3/*/src/*.rs
+Fe2O3/*/src/*.exe
+Fe2O3/*/src/*.pdb
