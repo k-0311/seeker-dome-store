@@ -15,6 +15,7 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   filenameHashing: true,
+  runtimeCompiler: true,
   devServer: {
     hot: true,
     disableHostCheck: true,
