@@ -15,7 +15,7 @@
   //2、观察长任务（performance 中Task）
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
-      console.log(entry)
+      // console.log(entry)
     }
   })
   observer.observe({ entryTypes: ['longtask'] })
@@ -24,7 +24,7 @@
   let connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   let type = connection.effectiveType;
   function updateConnectionStatus () {
-    console.log("Connection type changed from " + type + " to " + connection.effectiveType);
+    // console.log("Connection type changed from " + type + " to " + connection.effectiveType);
     type = connection.effectiveType;
   }
   connection.addEventListener('change', updateConnectionStatus);
@@ -32,9 +32,9 @@
   //4、计算DOMContentLoaded时间
   window.addEventListener('DOMContentLoaded', function () {
     let timing = performance.getEntriesByType('navigation')[0];
-    console.log(timing.domInteractive);
-    console.log(timing.fetchStart);
+    // console.log(timing.domInteractive);
+    // console.log(timing.fetchStart);
     let diff = timing.domInteractive - timing.fetchStart;
-    console.log("TTI: " + diff);
+    // console.log("TTI: " + diff);
   })
 })()
