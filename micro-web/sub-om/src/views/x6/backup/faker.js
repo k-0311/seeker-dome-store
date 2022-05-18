@@ -156,11 +156,58 @@ class List {
   }
 }
 
-export const formatList = data => {
-  const list = new List(data)
+export const getDataList = () => {
+  const list = new List(faker)
   return list.getDataList()
 }
 
-const calcWidth = data => {
-  
+
+
+class List1 {
+  constructor(source) {
+    this.source = source
+  }
+  getDataList () {
+    this.key = 10000
+    this.dataList = []
+    this.source.Children = this.source.NextNode
+    this.source.Parent = this.source.PrvNode
+    this.source.image = '/static/images/triangle.png'
+    this.setKey(this.source)
+    this.pushDataList(this.source)
+    return this.dataList
+  }
+  pushDataList (data, parent, dir) {
+    this.setKey(data)
+    this.parse(data, parent, dir)
+    if (Array.isArray(data.Children)) {
+      data.Children.forEach(child => this.pushDataList(child, data.key, 'right'))
+    }
+    if (Array.isArray(data.Parent)) {
+      data.Parent.forEach(child => this.pushDataList(child, data.key, 'left'))
+    }
+  }
+  parse (data, parent, dir) {
+    const jumpInfo = data.JumpPageInfo
+    this.dataList.push({
+      key: data.key,
+      image: data.image,
+      title: data.NamePlus,
+      date: data.EventDate,
+      type: data.Type,
+      code: data.Name,
+      subType: data.SubType,
+      jumpInfo,
+      hasLink: jumpInfo && jumpInfo.PageName,
+      parent,
+      dir
+    })
+  }
+  setKey (data) {
+    this.key++
+    data.key = 'KEY_' + this.key
+  }
+  hideSomeNode () {
+
+  }
 }

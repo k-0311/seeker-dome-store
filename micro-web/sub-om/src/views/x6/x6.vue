@@ -1,11 +1,15 @@
 <template>
-  <div id="draw-cot"></div>
+  <div id="x6-box"></div>
 </template>
 
 <script>
 import '@antv/x6-vue-shape'
-import { Graph, Node, Path, Cell } from '@antv/x6'
+import { Graph } from '@antv/x6'
 import nodeBase from './node-base';
+import { getDataList } from './backup/faker';
+import { createNodeBase, createNodeEdge } from './config';
+
+const OVERWRITE = true
 export default {
   data () {
     return {
@@ -21,47 +25,28 @@ export default {
       Graph.registerNode('node-base', {
         inherit: 'vue-shape',
         width: 180,
-        height: 36,
+        height: 60,
         component: {
           template: `<node-base />`,
           components: {
             nodeBase
           }
-        },
-        ports: {
-          groups: {
-            top: {
-              position: 'top',
-              attrs:
-              {
-                circle: {
-                  r: 4,
-                  magnet: true,
-                  stroke:
-                    '#C2C8D5',
-                  strokeWidth: 1,
-                  fill: '#fff'
-                }
-              }
-            },
-            bottom: {
-              position: 'bottom',
-              attrs: {
-                circle: {
-                  r: 4,
-                  magnet:
-                    true,
-                  stroke: '#C2C8D5',
-                  strokeWidth: 1,
-                  fill: '#fff'
-                }
-              }
+        }
+      }, OVERWRITE)
+      Graph.registerEdge('node-edge', {
+        inherit: 'edge',
+        attrs: {
+          line: {
+            stroke: '#C2C8D5',
+            strokeWidth: 2,
+            targetMarker: {
+              name: 'block',
+              width: 12,
+              height: 8
             }
           }
         }
-      },
-        true
-      )
+      }, OVERWRITE)
       const graph = new Graph({
         grid: {
           size: 10,
@@ -75,7 +60,7 @@ export default {
         background: {
           color: '#fffbe6' // 设置画布背景颜色
         },
-        container: document.getElementById('draw-cot'),
+        container: document.getElementById('x6-box'),
         panning: {
           enabled: true,
           eventTypes: ['leftMouseDown', 'mouseWheel']
@@ -87,133 +72,45 @@ export default {
           maxScale: 1.5,
           minScale: 0.5
         },
-        highlighting: {
-          magnetAdsorbed: {
-            name: 'stroke',
-            args: {
-              attrs: {
-                fill: '#fff',
-                stroke: '#31d0c6',
-                strokeWidth: 4
-              }
-            }
-          }
-        },
-        connecting: {
-          snap: true,
-          allowBlank: false,
-          allowLoop: false,
-          highlight: true,
-          connector: 'algo-connector',
-          connectionPoint: 'anchor',
-          anchor: 'center',
-          validateMagnet ({ magnet }) {
-            // return magnet.getAttribute('port-group') !== 'top'
-
-            // 限制连线配置
-            return true
-          },
-          createEdge () {
-            return graph.createEdge({
-              shape: 'dag-edge',
-              attrs: {
-                line: {
-                  strokeDasharray: '5 5',
-                  targetMarker: {
-                    name: 'block',
-                    width: 12,
-                    height: 8
-                  }
-                }
-              },
-              zIndex: -1
-            })
-          }
-        },
-        selecting: {
-          enabled: true,
-          multiple: true,
-          rubberEdge: true,
-          rubberNode: true,
-          modifiers: 'shift',
-          rubberband: true
-        },
-        keyboard: true,
-        clipboard: true,
-        history: true
       })
       this.graph = graph
-      this.addNode()
+      this.init()
     },
-    addNode () {
-      const time = new Date().getTime()
-      const option = {
-        x: 500,
-        y: 200,
-        width: 180,
-        height: 60,
-        shape: 'node-base',
-        data: {
-          type: 'database',
-          label: '数据库',
-          name: 'mySql',
-          "data": {
-            "name": 'mysql'
-          }
-        },
-        ports: {
-          groups: {
-            top: {
-              position: 'top',
-              attrs:
-              {
-                circle: {
-                  r: 4,
-                  magnet: true,
-                  stroke:
-                    '#C2C8D5',
-                  strokeWidth: 1,
-                  fill: '#fff'
-                }
-              }
-            },
-            bottom: {
-              position: 'bottom',
-              attrs: {
-                circle: {
-                  r: 4,
-                  magnet:
-                    true,
-                  stroke: '#C2C8D5',
-                  strokeWidth: 1,
-                  fill: '#fff'
-                }
-              }
-            }
-          },
-          items: [
-            {
-              id: `in-${time}`,
-              group: 'top' // 指定分组名称
-            },
-            {
-              id: `out-${time}`,
-              group: 'bottom' // 指定分组名称
-            }
-          ]
+    init () {
+      const dataList = getDataList()
+      const cells = []
+      let left = 0
+      let right = 0
+      let index = 0
+      dataList.forEach((item, i) => {
+        if (item.dir === "right") {
+          index = right
+          right++
+        } else {
+          index = left
+          left--
         }
-      }
+        const node = createNodeBase(item, index)
+        cells.push(this.graph.createNode(node))
+        if (item.key && item.parent) {
+          const edge = createNodeEdge(item)
+          cells.push(this.graph.createEdge(edge))
+        }
+      })
+      this.graph.resetCells(cells)
+    },
+    addNode (option) {
       const p = this.graph.pageToLocal(option.x, option.y)
       this.graph.addNode(Object.assign({}, option, p))
-    }
+    },
   }
 }
 </script>
 
 <style scoped>
-#draw-cot {
+#x6-box {
   margin: 0 auto;
-  width: 600px;
-  height: 600px;
+  width: 700px;
+  height: 700px;
 }
 </style>

@@ -10,7 +10,7 @@
     <router-link to="/dark">dark</router-link> |
     <router-link to="/capsule">capsule</router-link> |
     <router-link to="/model">model</router-link> |
-    <router-link to="/x6">x6</router-link>
+    <router-link to="/autox6">x6</router-link>
   </div>
   <router-view />
 </template>
