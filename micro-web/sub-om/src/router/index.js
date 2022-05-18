@@ -18,7 +18,6 @@ const RouteK2 = [
 const RouteT3 = [
   { path: '/dark', name: 'dark', auth: T3, component: () => import(/* webpackChunkName: "dark" */ '@/views/dark') },
   { path: '/capsule', name: 'capsule', auth: T3, component: () => import(/* webpackChunkName: "capsule" */ '@/views/capsule') },
-  { path: '/x6', name: 'x6', auth: T3, component: () => import(/* webpackChunkName: "x6" */ '@/views/x6/x6') },
   { path: '/autox6', name: 'autox6', auth: T3, component: () => import(/* webpackChunkName: "x6" */ '@/views/autox6/x6') }
 ]
 
