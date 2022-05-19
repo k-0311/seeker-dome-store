@@ -1,5 +1,5 @@
 <template>
-  <div class="node" :class="{'hide':hide}">
+  <div class="node">
     <div class="title">
       <span>{{data.title}}</span>
       <img class="icon" src="https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png" @click="jump">
@@ -9,6 +9,7 @@
       <img class="icon" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi-1.lanrentuku.com%2F2020%2F9%2F5%2F6e9f3071-0cf7-4fec-adf9-f50de0d026d7.png%3FimageView2%2F2%2Fw%2F500&refer=http%3A%2F%2Fi-1.lanrentuku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655372977&t=07709032c330bb39906160d7023a330e" @click="copy">
       <img class="icon" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F52%2F43%2F5816bc69d5798_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655372977&t=d1991b38fb29f3e416cb28a7ea18629a" @click="abstract">
     </div>
+    <img @click="toggle" :src="toggleimg">
   </div>
 </template>
 
@@ -19,16 +20,38 @@ export default {
   inject: ['getGraph', 'getNode'],
   data () {
     return {
-      data: '',
-      hide: false
+      data: {},
+      collapsed: false,
+    }
+  },
+  computed: {
+    toggleimg ({ collapsed }) {
+      return collapsed ? 'https://dgss1.bdstatic.com/5bVXsj_p_tVS5dKfpU_Y_D3/data/b51544df631f5dd536ade159b09c1dcf' : 'https://dgss0.bdstatic.com/5bVWsj_p_tVS5dKfpU_Y_D3/res/r/image/2019-08-16/3c8835ab2cb0db921a8879952df3cac9.png'
     }
   },
   mounted () {
-    const self = this
-    const node = this.getNode()
-    this.data = node.data
+    this.graph = this.getGraph()
+    this.node = this.getNode()
+    this.data = this.node.data
+    this.collapsed = this.data.collapsed
   },
   methods: {
+    toggle () {
+      this.collapsed = !this.collapsed
+      const run = preNode => {
+        const getSors = preNode.data.dir === 'left' ? this.graph.getPredecessors : this.graph.getSuccessors //获取所有前续、后续节点
+        const succ = getSors.call(this.graph, preNode, { distance: 1 })
+        if (succ) {
+          succ.forEach((node) => {
+            node.toggleVisible(!this.collapsed)//切换节点可见性
+            if (!node.data.collapsed) {
+              run(node)
+            }
+          })
+        }
+      }
+      run(this.node)
+    },
     jump () {
       console.log("jump -> jump")
     },
@@ -61,9 +84,6 @@ export default {
   .content {
     font-size: 12px;
   }
-}
-.hide {
-  display: none;
 }
 
 .icon {

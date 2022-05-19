@@ -28,11 +28,22 @@ export default {
     getDataList () {
       this.dataList = getDataList()
     },
+    renderLayout (dir) {
+      this.dir = dir
+      this.layout()
+      this.graph.centerContent()
+    },
     initGraph () {
       this.getDataList()
       this.createGraph()
+      const nodes = this.createNodes()
+      console.log("initGraph -> nodes", nodes)
+      const edges = this.createEdges(nodes)
+      this.graph.resetCells([...nodes, ...edges])
+      this.renderLayout('TB')
     },
     createGraph () {
+      registerComponents(Graph)
       this.graph = new Graph({
         grid: {
           size: 10,
@@ -62,12 +73,28 @@ export default {
       })
     },
     createNodes () {
-
+      return this.dataList.map(data => this.graph.createNode({
+        shape: 'node-base',
+        data,
+      }))
     },
-    createEdges () {
-
+    createEdges (nodes) {
+      const edges = []
+      nodes.forEach(target => {
+        if (target.data.parent) {
+          let source = nodes.find(({ data }) => data.key === target.data.parent)
+          if (target.data.dir === 'left') {
+            [target, source] = [source, target]
+          }
+          edges.push(this.graph.createEdge({
+            shape: 'node-edge',
+            source: { cell: source.id },
+            target: { cell: target.id },
+          }))
+        }
+      })
+      return edges
     },
-    //=====================
     layout () {
       const nodes = this.graph.getNodes()
       const edges = this.graph.getEdges()
@@ -136,11 +163,6 @@ export default {
 
       this.graph.unfreeze()
     },
-    renderLayout (dir) {
-      this.dir = dir
-      this.layout()
-      this.graph.centerContent()
-    }
   }
 }
 </script>

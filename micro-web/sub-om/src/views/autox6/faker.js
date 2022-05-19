@@ -215,7 +215,8 @@ export class List {
       jumpInfo,
       hasLink: jumpInfo && jumpInfo.PageName,
       parent,
-      dir
+      dir,
+      collapsed: false
     })
   }
   setKey (data) {
