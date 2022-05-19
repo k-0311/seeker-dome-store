@@ -12,6 +12,7 @@ import { Graph } from '@antv/x6'
 import dagre from 'dagre'
 import { registerComponents } from './components';
 import { getDataList } from './faker';
+import { left } from '@antv/x6/lib/registry/port-layout/line';
 export default {
   data () {
     return {
@@ -37,10 +38,17 @@ export default {
       this.getDataList()
       this.createGraph()
       const nodes = this.createNodes()
-      console.log("initGraph -> nodes", nodes)
       const edges = this.createEdges(nodes)
       this.graph.resetCells([...nodes, ...edges])
       this.renderLayout('TB')
+      this.setCollapseBtn()
+    },
+    setCollapseBtn () {
+      [...this.graph.getRootNodes(), ...this.graph.getLeafNodes()].forEach(node => {
+        node.setData({
+          hideCollapse: true
+        })
+      })
     },
     createGraph () {
       registerComponents(Graph)

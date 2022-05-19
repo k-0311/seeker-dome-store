@@ -9,7 +9,7 @@
       <img class="icon" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi-1.lanrentuku.com%2F2020%2F9%2F5%2F6e9f3071-0cf7-4fec-adf9-f50de0d026d7.png%3FimageView2%2F2%2Fw%2F500&refer=http%3A%2F%2Fi-1.lanrentuku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655372977&t=07709032c330bb39906160d7023a330e" @click="copy">
       <img class="icon" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F52%2F43%2F5816bc69d5798_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655372977&t=d1991b38fb29f3e416cb28a7ea18629a" @click="abstract">
     </div>
-    <img @click="toggle" :src="toggleimg">
+    <img @click="toggle" :src="toggleimg" v-if="!data.hideCollapse">
   </div>
 </template>
 
@@ -38,19 +38,24 @@ export default {
   methods: {
     toggle () {
       this.collapsed = !this.collapsed
-      const run = preNode => {
-        const getSors = preNode.data.dir === 'left' ? this.graph.getPredecessors : this.graph.getSuccessors //获取所有前续、后续节点
-        const succ = getSors.call(this.graph, preNode, { distance: 1 })
-        if (succ) {
-          succ.forEach((node) => {
-            node.toggleVisible(!this.collapsed)//切换节点可见性
-            if (!node.data.collapsed) {
-              run(node)
-            }
-          })
-        }
+      if (this.node.data.dir) {
+        this.collapse(this.node, this.node.data.dir)
+      } else {
+        this.collapse(this.node, 'left')
+        this.collapse(this.node, 'right')
       }
-      run(this.node)
+    },
+    collapse (preNode, dir) {
+      const getSors = dir === 'left' ? this.graph.getPredecessors : this.graph.getSuccessors //获取所有前续、后续节点
+      const succ = getSors.call(this.graph, preNode, { distance: 1 })
+      if (succ) {
+        succ.forEach(node => {
+          node.toggleVisible(!this.collapsed)//切换节点可见性
+          if (!node.data.collapsed) {
+            this.collapse(node, node.data.dir)
+          }
+        })
+      }
     },
     jump () {
       console.log("jump -> jump")
