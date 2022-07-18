@@ -18,7 +18,8 @@ const RouteK2 = [
 const RouteT3 = [
   { path: '/dark', name: 'dark', auth: T3, component: () => import(/* webpackChunkName: "dark" */ '@/views/dark') },
   { path: '/capsule', name: 'capsule', auth: T3, component: () => import(/* webpackChunkName: "capsule" */ '@/views/capsule') },
-  { path: '/autox6', name: 'autox6', auth: T3, component: () => import(/* webpackChunkName: "x6" */ '@/views/autox6/x6') }
+  { path: '/autox6', name: 'autox6', auth: T3, component: () => import(/* webpackChunkName: "x6" */ '@/views/autox6/x6') },
+  { path: '/paste', name: 'paste', auth: T3, component: () => import(/* webpackChunkName: "x6" */ '@/views/paste') }
 ]
 
 export const dynamicRoutes = [...RouteN1, ...RouteK2, ...RouteT3]
