@@ -15,52 +15,40 @@ fn main() -> Result<(), Unspecified> {
     let p2 = &vvv[1..];
     println!("{:?}", p1);
     println!("{:?}", p2);
+    println!("===============================");
     // let p3 = p1.iter().zip(p2);
     // p3.map(|(a, b)| {});
-
-    let vt1 = Vector::new(vec![1.0, 2.0]);
-    let vt2 = vt1.add(vec![5.0, 8.0]);
-    let vt3 = vt2.subtract(vec![4.0, 7.0]);
-    // let vt4 = vt3.scale_by(-0.5);
-    let vt5 = vt3.length();
-    println!("{}", vt5);
-
+    linear_algebra_test();
     Ok(())
 }
-#[derive(Debug)]
-struct Vector {
-    components: Vec<f64>,
-}
 
-impl Vector {
-    fn new(components: Vec<f64>) -> Vector {
-        Vector { components }
-    }
-    fn add(&self, other: Vec<f64>) -> Vector {
-        let mut components = vec![];
-        for (i, v) in other.iter().enumerate() {
-            components.push(self.components[i] + v);
-        }
-        Vector::new(components)
-    }
-    fn subtract(&self, other: Vec<f64>) -> Vector {
-        let mut components = vec![];
-        for (i, v) in other.iter().enumerate() {
-            components.push(self.components[i] - v);
-        }
-        Vector::new(components)
-    }
-    fn scale_by(&self, number: f64) -> Vector {
-        let components = self
-            .components
-            .iter()
-            .map(|x| x * number)
-            .collect::<Vec<f64>>();
-        Vector::new(components)
-    }
-    fn length(&self) -> f64 {
-        let first = self.components[0];
-        let last = self.components[self.components.len() - 1];
-        first.hypot(last)
-    }
+mod linear_algebra;
+use crate::linear_algebra::*;
+fn linear_algebra_test() {
+    // let vt1 = Vectors::new(vec![3.0, 7.0]);
+    // let vt2 = vt1.add(vec![5.0, 8.0]);
+    // let vt3 = vt2.subtract(vec![5.0, 6.0]);
+    // let vt4 = vt3.scale_by(2.0);
+    // let vt5 = vt4.dot_product(vec![2.0, 2.0]);
+    // println!("{}", vt3.length());
+    // println!("{}", vt5);
+
+    // let xt1 = vt1.normalize();
+    // println!("{:?}", xt1);
+    // println!("{}", xt1.length());
+
+    let vt1 = Vectors::new(vec![2.0, 4.0]);
+    let vt2 = Vectors::new(vec![4.0, 8.0]);
+    println!("{}", vt1.have_same_direction_with(vt2));
+
+    let vt3d = Vectors::new(vec![1.0, 2.0, 2.0]);
+    println!("{:?}", vt3d.cross_product(vec![2.0, 1.0, 1.0]));
+
+    let angle1 = Vectors::new(vec![0.0, 4.0]);
+    let angle2 = Vectors::new(vec![4.0, 4.0]);
+    println!("{:?}", angle1.angle_between(angle2));
+
+    let eq1 = Vectors::new(vec![1.0, 2.0]);
+    let eq2 = Vectors::new(vec![1.0, 3.0]);
+    println!("{}", eq1.equal_to(eq2.components));
 }
