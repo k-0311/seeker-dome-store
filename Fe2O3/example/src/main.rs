@@ -18,14 +18,16 @@ fn main() -> Result<(), Unspecified> {
     println!("===============================");
     // let p3 = p1.iter().zip(p2);
     // p3.map(|(a, b)| {});
-    linear_algebra_test();
+    // vecotrs_test();
+    matrix_test();
     Ok(())
 }
 
 mod linear_algebra;
 use crate::linear_algebra::*;
-fn linear_algebra_test() {
-    // let vt1 = Vectors::new(vec![3.0, 7.0]);
+#[allow(dead_code)]
+fn vecotrs_test() {
+    // let vt1 = Vector::new(vec![3.0, 7.0]);
     // let vt2 = vt1.add(vec![5.0, 8.0]);
     // let vt3 = vt2.subtract(vec![5.0, 6.0]);
     // let vt4 = vt3.scale_by(2.0);
@@ -37,18 +39,36 @@ fn linear_algebra_test() {
     // println!("{:?}", xt1);
     // println!("{}", xt1.length());
 
-    let vt1 = Vectors::new(vec![2.0, 4.0]);
-    let vt2 = Vectors::new(vec![4.0, 8.0]);
+    let vt1 = Vector::new(vec![2.0, 4.0]);
+    let vt2 = Vector::new(vec![4.0, 8.0]);
     println!("{}", vt1.have_same_direction_with(vt2));
 
-    let vt3d = Vectors::new(vec![1.0, 2.0, 2.0]);
+    let vt3d = Vector::new(vec![1.0, 2.0, 2.0]);
     println!("{:?}", vt3d.cross_product(vec![2.0, 1.0, 1.0]));
 
-    let angle1 = Vectors::new(vec![0.0, 4.0]);
-    let angle2 = Vectors::new(vec![4.0, 4.0]);
+    let angle1 = Vector::new(vec![0.0, 4.0]);
+    let angle2 = Vector::new(vec![4.0, 4.0]);
     println!("{:?}", angle1.angle_between(angle2));
 
-    let eq1 = Vectors::new(vec![1.0, 2.0]);
-    let eq2 = Vectors::new(vec![1.0, 3.0]);
+    let eq1 = Vector::new(vec![1.0, 2.0]);
+    let eq2 = Vector::new(vec![1.0, 3.0]);
     println!("{}", eq1.equal_to(eq2.components));
+}
+
+#[allow(dead_code)]
+fn matrix_test() {
+    let vector_2d = Vector::new(vec![3.0, 5.0]);
+    let vector_3d = Vector::new(vec![3.0, 5.0, 2.0]);
+    let matrix_2x_2d = Matrix::new(vec![vec![1, 2], vec![3, 4]]);
+    let matrix_2x_3d = Matrix::new(vec![vec![1, 2, 3], vec![4, 5, 6]]);
+    let matrix_3x_2d = Matrix::new(vec![vec![1, 2], vec![3, 4], vec![5, 6]]);
+
+    let t1 = vector_2d.transform(&matrix_2x_2d);
+    println!("{:?}", t1);
+
+    let t2 = vector_3d.transform(&matrix_2x_3d);
+    println!("{:?}", t2);
+
+    let t3 = vector_2d.transform(&matrix_3x_2d);
+    println!("{:?}", t3);
 }
