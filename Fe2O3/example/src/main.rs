@@ -1,6 +1,8 @@
 use ring::error::Unspecified;
 use ring::rand::SecureRandom;
 use ring::{hmac, rand};
+
+#[allow(dead_code)]
 fn main() -> Result<(), Unspecified> {
     let mut key_value = [0u8; 48];
     let rng = rand::SystemRandom::new();
@@ -10,16 +12,18 @@ fn main() -> Result<(), Unspecified> {
     let signature = hmac::sign(&key, message.as_bytes());
     hmac::verify(&key, message.as_bytes(), signature.as_ref())?;
 
-    let vvv = vec![1, 2];
-    let p1 = &vvv[..&vvv.len() - 1];
-    let p2 = &vvv[1..];
-    println!("{:?}", p1);
-    println!("{:?}", p2);
+    // let vvv = vec![1, 2];
+    // let p1 = &vvv[..&vvv.len() - 1];
+    // let p2 = &vvv[1..];
+    // println!("{:?}", p1);
+    // println!("{:?}", p2);
     println!("===============================");
     // let p3 = p1.iter().zip(p2);
     // p3.map(|(a, b)| {});
     // vecotrs_test();
-    matrix_test();
+    // matrix_test();
+    println!("===============================");
+    contour_test();
     Ok(())
 }
 
@@ -59,9 +63,9 @@ fn vecotrs_test() {
 fn matrix_test() {
     let vector_2d = Vector::new(vec![3.0, 5.0]);
     let vector_3d = Vector::new(vec![3.0, 5.0, 2.0]);
-    let matrix_2x_2d = Matrix::new(vec![vec![1, 2], vec![3, 4]]);
-    let matrix_2x_3d = Matrix::new(vec![vec![1, 2, 3], vec![4, 5, 6]]);
-    let matrix_3x_2d = Matrix::new(vec![vec![1, 2], vec![3, 4], vec![5, 6]]);
+    let matrix_2x_2d = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
+    let matrix_2x_3d = Matrix::new(vec![vec![1.0, 2.0, 3.0], vec![4.0, 5.0, 6.0]]);
+    let matrix_3x_2d = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0], vec![5.0, 6.0]]);
 
     let t1 = vector_2d.transform(&matrix_2x_2d);
     println!("{:?}", t1);
@@ -71,4 +75,45 @@ fn matrix_test() {
 
     let t3 = vector_2d.transform(&matrix_3x_2d);
     println!("{:?}", t3);
+}
+
+#[allow(dead_code)]
+fn contour_test() {
+    // let mt1 = Matrix::new(vec![
+    //     vec![3.0, -4.0],
+    //     vec![0.0, -3.0],
+    //     vec![6.0, -2.0],
+    //     vec![-1.0, 1.0],
+    // ]);
+    // let mt2 = Matrix::new(vec![vec![3.0, 2.0, -4.0], vec![4.0, -3.0, 5.0]]);
+
+    // println!("{:?}", mt1.multiply(&mt2));
+
+    let mt3 = Matrix::new(vec![
+        vec![1.0, 2.0, 3.0],
+        vec![4.0, 5.0, 6.0],
+        vec![7.0, 8.0, 9.0],
+    ]);
+    println!("{:?}", mt3.transpose());
+
+    // let mtm1 = Matrix::new(vec![
+    //     vec![1.0, 2.0, 3.0],
+    //     vec![4.0, 5.0, 6.0],
+    //     vec![7.0, 8.0, 9.0],
+    // ]);
+    // println!("{:?}", mtm1.cofactor(0, 1));
+
+    // let mtmd = Matrix::new(vec![
+    //     vec![1.0, 2.0, 0.0],
+    //     vec![0.0, 1.0, 2.0],
+    //     vec![2.0, 0.0, 1.0],
+    // ]);
+    // println!("{:?}", mtmd.adjugate());
+
+    let mtmd = Matrix::new(vec![
+        vec![2.0, 3.0, 1.0],
+        vec![4.0, 7.0, 2.0],
+        vec![3.0, 1.0, 1.0],
+    ]);
+    println!("{:?}", mtmd.inverse());
 }
