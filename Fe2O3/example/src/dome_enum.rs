@@ -45,3 +45,32 @@ impl List {
         }
     }
 }
+
+#[allow(dead_code)]
+#[derive(Debug)]
+#[repr(u8)]
+enum WeaponLevel {
+    None = 0,
+    Level1 = 1,
+    Level2 = 2,
+    Level3 = 3,
+}
+#[allow(dead_code)]
+impl WeaponLevel {
+    pub fn up(self) -> Self {
+        match self {
+            WeaponLevel::None => WeaponLevel::Level1,
+            WeaponLevel::Level1 => WeaponLevel::Level2,
+            WeaponLevel::Level2 => WeaponLevel::Level3,
+            WeaponLevel::Level3 => WeaponLevel::Level3,
+        }
+    }
+    pub fn down(self) -> Self {
+        match self {
+            WeaponLevel::None => WeaponLevel::Level1,
+            WeaponLevel::Level1 => WeaponLevel::Level1,
+            WeaponLevel::Level2 => WeaponLevel::Level1,
+            WeaponLevel::Level3 => WeaponLevel::Level2,
+        }
+    }
+}

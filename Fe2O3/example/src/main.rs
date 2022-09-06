@@ -1,34 +1,27 @@
-use ring::error::Unspecified;
-use ring::rand::SecureRandom;
-use ring::{hmac, rand};
-
+// use std::env::Args;
 #[allow(dead_code)]
-fn main() -> Result<(), Unspecified> {
-    let mut key_value = [0u8; 48];
-    let rng = rand::SystemRandom::new();
-    rng.fill(&mut key_value)?;
-    let key = hmac::Key::new(hmac::HMAC_SHA256, &key_value);
-    let message = "legitimate and important message";
-    let signature = hmac::sign(&key, message.as_bytes());
-    hmac::verify(&key, message.as_bytes(), signature.as_ref())?;
-
+fn main() {
+    // let args: Args = std::env::args();
+    // println!("{:?}", args);
     // let vvv = vec![1, 2];
     // let p1 = &vvv[..&vvv.len() - 1];
     // let p2 = &vvv[1..];
     // println!("{:?}", p1);
     // println!("{:?}", p2);
-    println!("===============================");
     // let p3 = p1.iter().zip(p2);
     // p3.map(|(a, b)| {});
     // vecotrs_test();
     // matrix_test();
-    println!("===============================");
-    contour_test();
-    Ok(())
+    // contour_test();
+    // let s1 = "aaaa".to_string();
+    // let x1 = &s1[0..2];
+    // println!("{}", x1);
 }
 
+mod dome_enum;
 mod linear_algebra;
 use crate::linear_algebra::*;
+
 #[allow(dead_code)]
 fn vecotrs_test() {
     // let vt1 = Vector::new(vec![3.0, 7.0]);
