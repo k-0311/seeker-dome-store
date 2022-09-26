@@ -10,7 +10,8 @@ const RouteN1 = [
   { path: '/labs', name: 'labs', auth: N1, component: () => import(/* webpackChunkName: "labs" */ '@/views/labs') },
   { path: '/gzip', name: 'gzip', auth: N1, component: () => import(/* webpackChunkName: "gzip" */ '@/views/gzip') },
   { path: '/blob', name: 'blob', auth: N1, component: () => import(/* webpackChunkName: "blob" */ '@/views/blob') },
-  { path: '/css', name: 'css', auth: N1, component: () => import(/* webpackChunkName: "css" */ '@/views/css') }
+  { path: '/css', name: 'css', auth: N1, component: () => import(/* webpackChunkName: "css" */ '@/views/css') },
+  { path: '/dome', name: 'dome', auth: N1, component: () => import(/* webpackChunkName: "dome" */ '@/views/dome') }
 ]
 const RouteK2 = [
   { path: '/online', name: 'online', auth: V2, component: () => import(/* webpackChunkName: "online" */ '@/views/online') },

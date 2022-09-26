@@ -1,3 +1,4 @@
+import inputFilter from './input-filter';
 export default (app, router, store) => {
   app.directive('permission', {
     mounted (el, binding, vnode) {
@@ -22,4 +23,6 @@ export default (app, router, store) => {
     beforeUnmount () { }, // 与组件的生命周期钩子类似，它将在元素被卸载之前调用。
     unmounted () { }//一旦指令被移除，就会调用这个钩子。也只调用一次。
   })
+
+  app.directive('inputFilter', inputFilter)
 }
