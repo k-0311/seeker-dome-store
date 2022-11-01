@@ -23,11 +23,10 @@ export default {
 
     const randomPhoto = async () => {
       const res = await fetch('https://source.unsplash.com/user/erondu', {
-        methods: 'get',
-        responseType: 'blob'
+        methods: 'get'
       })
-      console.log("setup -> res", res)
-      asyncUrl.value = window.URL.createObjectURL(res.data)
+      const blob = await res.blob()
+      asyncUrl.value = URL.createObjectURL(blob)
     }
     const chunkUpload = async () => {
       const file = new File(['a'.repeat(2000)], 'some.txt') //File 接口基于 Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件 详情参考[https://developer.mozilla.org/zh-CN/docs/Web/API/File]
