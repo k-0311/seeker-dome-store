@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="paste-box" contenteditable="true" ref="paste"></div> -->
   <input type="text" ref="paste">
 </template>
 
@@ -36,9 +35,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.paste-box {
-  width: 500px;
-  height: 200px;
-  background-color: orange;
-}
+
 </style>

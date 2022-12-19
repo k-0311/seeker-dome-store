@@ -7,18 +7,29 @@
       <div class="line"></div>
       Neon Button
     </div>
+
     <div class="gird-box" v-show="grid">
-      <div class="outer" v-for="item in 9" :key="item">
+      <div class="outer" :style="`--line-index: ${v}`" v-for="item in 9" :key="item">
         <div class="inner"></div>
         <div class="other"></div>
       </div>
     </div>
+
     <div class="text-decoration" v-show=tede>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. <a>Mollitia nostrum placeat consequatur deserunt velit ducimus possimus commodi temporibus debitis quam</a>, molestiae laboriosam sit repellendus sed sapiente quidem quod accusantium vero.</p>
     </div>
+
     <div class="screen" v-show="screen"></div>
+
     <div class="hover-box" v-show="hoverBox">
       <button class="hover-btn">Hover me !</button>
+    </div>
+
+    <div class="clip-text" v-show="clipText"></div>
+
+    <div class="mix-blend-mode">
+      <div class="mix-blend-mode-circle"></div>
+      <div class="mix-blend-mode-ring"></div>
     </div>
   </div>
 </template>
@@ -31,7 +42,8 @@ export default {
       grid: false,
       tede: false,
       screen: false,
-      hoverBox: false
+      hoverBox: false,
+      clipText: true
     }
   }
 }
@@ -326,6 +338,46 @@ $a1: #c1ebff;
   50%,
   100% {
     bottom: 100%;
+  }
+}
+//=============================
+.clip-text {
+  margin: 0 auto;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+  color: transparent;
+  background-clip: text;
+  background-image: url('../assets/xxx.png');
+  &:empty::after {
+    content:"CLIP TEXT"
+  }
+}
+//===========================
+.mix-blend-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  mix-blend-mode: difference;
+  &-circle {
+    position: relative;
+    left: 16px;
+    height: 80px;
+    width: 80px;
+    background-color: palegreen;
+    border-radius: 50%;
+  }
+  &-ring {
+    mix-blend-mode: difference;
+    position: relative;
+    left: -16px;
+    height: 64px;
+    width: 64px;
+    border-radius: 50%;
+    border: 8px solid palegreen;
   }
 }
 </style>

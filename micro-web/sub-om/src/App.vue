@@ -10,7 +10,6 @@
     <router-link to="/dark">dark</router-link> |
     <router-link to="/capsule">capsule</router-link> |
     <router-link to="/model">model</router-link> |
-    <router-link to="/dome">dome</router-link> |
     <router-link to="/paste">paste</router-link>
   </div>
   <router-view />
