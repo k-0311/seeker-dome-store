@@ -8,26 +8,19 @@
       Neon Button
     </div>
 
-    <div class="gird-box" v-show="grid">
-      <div class="outer" :style="`--line-index: ${v}`" v-for="item in 9" :key="item">
-        <div class="inner"></div>
-        <div class="other"></div>
-      </div>
-    </div>
-
     <div class="text-decoration" v-show=tede>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. <a>Mollitia nostrum placeat consequatur deserunt velit ducimus possimus commodi temporibus debitis quam</a>, molestiae laboriosam sit repellendus sed sapiente quidem quod accusantium vero.</p>
     </div>
-
-    <div class="screen" v-show="screen"></div>
 
     <div class="hover-box" v-show="hoverBox">
       <button class="hover-btn">Hover me !</button>
     </div>
 
+    <div class="screen" v-show="screen"></div>
+
     <div class="clip-text" v-show="clipText"></div>
 
-    <div class="mix-blend-mode">
+    <div class="mix-blend-mode" v-show="mixBlend">
       <div class="mix-blend-mode-circle"></div>
       <div class="mix-blend-mode-ring"></div>
     </div>
@@ -38,12 +31,12 @@
 export default {
   setup () {
     return {
-      lightBtn: false,
-      grid: false,
-      tede: false,
-      screen: false,
-      hoverBox: false,
-      clipText: true
+      lightBtn: true,
+      tede: true,
+      hoverBox: true,
+      screen: true,
+      clipText: true,
+      mixBlend: true
     }
   }
 }
@@ -59,6 +52,125 @@ $a1: #c1ebff;
   background: $wrap-bgc;
 }
 //========================================
+.light {
+  position: relative;
+  margin: 0 auto;
+  padding: 25px 30px;
+  width: fit-content;
+  color: $light-color;
+  font-size: 24px;
+  text-transform: uppercase;
+  transition: 0.5s;
+  letter-spacing: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  &:hover {
+    background-color: $light-color;
+    color: $wrap-bgc;
+    box-shadow: 0 0 5px $light-color, 0 0 25px $light-color,
+      0 0 50px $light-color, 0 0 200px $light-color; //多重阴影叠加，可以形成一个类似霓虹灯光的效果
+  }
+  filter: hue-rotate(
+    200deg
+  ); //给图像应用色相旋转。"angle"一值设定图像会被调整的色环角度值。值为0deg，则图像无变化。若值未设置，默认值是0deg。该值虽然没有最大值，超过360deg的值相当于又绕一圈
+  .line {
+    position: absolute;
+    &:nth-child(1) {
+      width: 100%;
+      height: 2px;
+      top: 0;
+      left: -100%;
+      background: linear-gradient(to right, transparent, $light-color);
+      animation: animate1 1s linear infinite;
+    }
+    &:nth-child(2) {
+      width: 2px;
+      height: 100%;
+      top: -100%;
+      right: 0;
+      background: linear-gradient(to bottom, transparent, $light-color);
+      animation: animate2 1s linear infinite;
+      animation-delay: 0.25s;
+    }
+    &:nth-child(3) {
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      right: -100%;
+      background: linear-gradient(to left, transparent, $light-color);
+      animation: animate3 1s linear infinite;
+      animation-delay: 0.5s;
+    }
+    &:nth-child(4) {
+      width: 2px;
+      height: 100%;
+      bottom: -100%;
+      left: 0;
+      background: linear-gradient(to top, transparent, $light-color);
+      animation: animate4 1s linear infinite;
+      animation-delay: 0.75s;
+    }
+  }
+}
+@keyframes animate1 {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+@keyframes animate2 {
+  0% {
+    top: -100%;
+  }
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+@keyframes animate3 {
+  0% {
+    right: -100%;
+  }
+  50%,
+  100% {
+    right: 100%;
+  }
+}
+@keyframes animate4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,
+  100% {
+    bottom: 100%;
+  }
+}
+//=============================
+.text-decoration {
+  margin: 0 auto;
+  width: 500px;
+  color: #fff;
+  text-align: justify;
+  line-height: 1.5;
+  a {
+    background: linear-gradient(90deg, #0cc, #0cc),
+      linear-gradient(90deg, #ff3c41, #fc0, #8500d8);
+    background-size: 100% 3px, 0 3px;
+    background-repeat: no-repeat;
+    background-position: 100% 100%, 0 100%;
+    transition: 1s all;
+    color: #0cc;
+    cursor: default;
+    &:hover {
+      background-size: 0 3px, 100% 3px;
+      color: pink;
+    }
+  }
+}
+//===============================
 .hover-box {
   @include flex-xy();
   margin: 0 auto;
@@ -202,149 +314,9 @@ $a1: #c1ebff;
     --color2: rgb(216, 73, 96);
   }
 }
-//===============================
-.text-decoration {
-  margin: 0 auto;
-  width: 500px;
-  color: #fff;
-  text-align: justify;
-  line-height: 1.5;
-  a {
-    background: linear-gradient(90deg, #0cc, #0cc),
-      linear-gradient(90deg, #ff3c41, #fc0, #8500d8);
-    background-size: 100% 3px, 0 3px;
-    background-repeat: no-repeat;
-    background-position: 100% 100%, 0 100%;
-    transition: 1s all;
-    color: #0cc;
-    &:hover {
-      background-size: 0 3px, 100% 3px;
-      color: pink;
-    }
-  }
-}
-//===============================
-.gird-box {
-  width: 470px;
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
-  background-color: pink;
-  .outer {
-    .inner {
-      position: relative;
-      width: 100%;
-      padding-bottom: 100%; //值为百分比时参照父元素宽度
-      background: orange;
-    }
-    .other {
-      height: 50px;
-      background-color: yellowgreen;
-    }
-  }
-}
-//===============================
-.light {
-  position: relative;
-  margin: 0 auto;
-  padding: 25px 30px;
-  width: fit-content;
-  color: $light-color;
-  font-size: 24px;
-  text-transform: uppercase;
-  transition: 0.5s;
-  letter-spacing: 4px;
-  cursor: pointer;
-  overflow: hidden;
-  &:hover {
-    background-color: $light-color;
-    color: $wrap-bgc;
-    box-shadow: 0 0 5px $light-color, 0 0 25px $light-color,
-      0 0 50px $light-color, 0 0 200px $light-color; //多重阴影叠加，可以形成一个类似霓虹灯光的效果
-  }
-  filter: hue-rotate(
-    200deg
-  ); //给图像应用色相旋转。"angle"一值设定图像会被调整的色环角度值。值为0deg，则图像无变化。若值未设置，默认值是0deg。该值虽然没有最大值，超过360deg的值相当于又绕一圈
-  .line {
-    position: absolute;
-    &:nth-child(1) {
-      width: 100%;
-      height: 2px;
-      top: 0;
-      left: -100%;
-      background: linear-gradient(to right, transparent, $light-color);
-      animation: animate1 1s linear infinite;
-    }
-    &:nth-child(2) {
-      width: 2px;
-      height: 100%;
-      top: -100%;
-      right: 0;
-      background: linear-gradient(to bottom, transparent, $light-color);
-      animation: animate2 1s linear infinite;
-      animation-delay: 0.25s;
-    }
-    &:nth-child(3) {
-      width: 100%;
-      height: 2px;
-      bottom: 0;
-      right: -100%;
-      background: linear-gradient(to left, transparent, $light-color);
-      animation: animate3 1s linear infinite;
-      animation-delay: 0.5s;
-    }
-    &:nth-child(4) {
-      width: 2px;
-      height: 100%;
-      bottom: -100%;
-      left: 0;
-      background: linear-gradient(to top, transparent, $light-color);
-      animation: animate4 1s linear infinite;
-      animation-delay: 0.75s;
-    }
-  }
-}
-@keyframes animate1 {
-  0% {
-    left: -100%;
-  }
-  50%,
-  100% {
-    left: 100%;
-  }
-}
-@keyframes animate2 {
-  0% {
-    top: -100%;
-  }
-  50%,
-  100% {
-    top: 100%;
-  }
-}
-@keyframes animate3 {
-  0% {
-    right: -100%;
-  }
-  50%,
-  100% {
-    right: 100%;
-  }
-}
-@keyframes animate4 {
-  0% {
-    bottom: -100%;
-  }
-  50%,
-  100% {
-    bottom: 100%;
-  }
-}
-//=============================
+//====================
 .clip-text {
   margin: 0 auto;
-  width: 500px;
-  height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -352,8 +324,9 @@ $a1: #c1ebff;
   color: transparent;
   background-clip: text;
   background-image: url('../assets/xxx.png');
+  background-position: center;
   &:empty::after {
-    content:"CLIP TEXT"
+    content: 'CLIP TEXT';
   }
 }
 //===========================
