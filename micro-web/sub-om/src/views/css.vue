@@ -24,6 +24,10 @@
       <div class="mix-blend-mode-circle"></div>
       <div class="mix-blend-mode-ring"></div>
     </div>
+
+    <div class="auto-color" v-if="autoColor">
+      <text class="auto-color-text">auto color</text>
+    </div>
   </div>
 </template>
 
@@ -36,7 +40,8 @@ export default {
       hoverBox: true,
       screen: true,
       clipText: true,
-      mixBlend: true
+      mixBlend: true,
+      autoColor: true
     }
   }
 }
@@ -351,6 +356,20 @@ $a1: #c1ebff;
     width: 64px;
     border-radius: 50%;
     border: 8px solid palegreen;
+  }
+}
+//===========================
+.auto-color {
+  margin: 20px auto;
+  width: 200px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #1aab8a;
+  background-color: currentColor;
+  &-text {
+    font-size: 30px;
+    filter: grayscale(1) contrast(999) invert(1);
   }
 }
 </style>
