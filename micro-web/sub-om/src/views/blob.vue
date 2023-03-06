@@ -58,7 +58,7 @@ export default {
       sizeCheck(file)
     }
     const sizeCheck = file => {
-      const MAX_FILE_SIZE = 10 * 1000 * 1000
+      const MAX_FILE_SIZE = 10 * 1024 * 1024
       if (!file) return
       if (file.size > MAX_FILE_SIZE) {
         return alert('文件大小不能超过10M')
