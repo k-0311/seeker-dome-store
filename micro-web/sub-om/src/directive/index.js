@@ -15,9 +15,7 @@ export default (app, router, store) => {
     beforeMount (el, binding, vnode, prevVnode) { //指令绑定到元素后调用。只调用一次。
       el.style.color = binding.value
     },
-    mounted (el, binding, vnode) {//元素插入父 DOM 后调用。
-      const vm = binding.instance
-    },
+    mounted (el, binding, vnode) { },//元素插入父 DOM 后调用。
     beforeUpdate () { }, // 在元素本身被更新之前调用，与组件的生命周期钩子十分相似。
     updated () { },//一旦组件和子级被更新，就会调用这个钩子。
     beforeUnmount () { }, // 与组件的生命周期钩子类似，它将在元素被卸载之前调用。
@@ -25,4 +23,13 @@ export default (app, router, store) => {
   })
 
   app.directive('inputFilter', inputFilter)
+
+  app.directive("keyboard", {
+    mounted (el, binding, vnode) {
+      window.addEventListener("keydown", binding.value);
+    },
+    beforeUnmount (el, binding, vnode) {
+      window.removeEventListener("keydown", binding.value);
+    },
+  });
 }

@@ -14,6 +14,7 @@ const RouteN1 = [
 ]
 const RouteK2 = [
   { path: '/online', name: 'online', auth: V2, component: () => import(/* webpackChunkName: "online" */ '@/views/online') },
+  { path: '/keyboard', name: 'keyboard', auth: V2, component: () => import(/* webpackChunkName: "keyboard" */ '@/views/keyboard') },
 ]
 const RouteT3 = [
   { path: '/dark', name: 'dark', auth: T3, component: () => import(/* webpackChunkName: "dark" */ '@/views/dark') },
