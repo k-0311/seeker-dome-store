@@ -24,12 +24,4 @@ export default (app, router, store) => {
 
   app.directive('inputFilter', inputFilter)
 
-  app.directive("keyboard", {
-    mounted (el, binding, vnode) {
-      window.addEventListener("keydown", binding.value);
-    },
-    beforeUnmount (el, binding, vnode) {
-      window.removeEventListener("keydown", binding.value);
-    },
-  });
 }

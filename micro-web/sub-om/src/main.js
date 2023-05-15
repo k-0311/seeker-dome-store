@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
 import routes, { addRoutes } from './router';
 import store from './store';
+import VueMousetrapPlugin from 'vue-mousetrap'
 
 import loading from './components/loading';
 import directive from './directive';
@@ -28,6 +29,7 @@ function render (props = {}) {
   instance.use(router);
   instance.use(store);
   instance.use(loading)
+  instance.use(VueMousetrapPlugin)
   instance.mount(container ? container.querySelector('#app') : '#app');
   directive(instance, router, store)
 }
