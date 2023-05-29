@@ -1,8 +1,8 @@
-// use std::env::Args;
+use std::env::Args;
 #[allow(dead_code)]
 fn main() {
-    // let args: Args = std::env::args();
-    // println!("{:?}", args);
+    let args: Args = std::env::args();
+    println!("{:?}", args);
     // let vvv = vec![1, 2];
     // let p1 = &vvv[..&vvv.len() - 1];
     // let p2 = &vvv[1..];

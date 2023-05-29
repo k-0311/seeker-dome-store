@@ -4,6 +4,12 @@
 
 <script>
 export default {
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.query = to.query
+      vm.$router.replace({ query: {} })//隐藏携带的 query
+    })
+  },
   mounted () {
     this.initPaste()
   },
@@ -35,5 +41,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

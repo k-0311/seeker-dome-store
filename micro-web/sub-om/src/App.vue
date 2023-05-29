@@ -10,7 +10,8 @@
     <router-link to="/dark">dark</router-link> |
     <router-link to="/capsule">capsule</router-link> |
     <router-link to="/model">model</router-link> |
-    <router-link to="/keyboard">keyboard</router-link>
+    <router-link to="/keyboard">keyboard</router-link>| 
+    <router-link to="/paste?aaa=111&bbb=222">paste</router-link>
   </div>
   <router-view />
   <div class="cookieDiv" v-if="showCookie">

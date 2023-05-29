@@ -141,7 +141,7 @@
       }
       return []
     }
-    console.log(treeFindPath(tree))
+    console.log('treeFindPath', treeFindPath(tree))
     console.log('=================================')
     function treeFindMultiPath(tree, func, path = [], result = []) {
       if (!tree) return []
@@ -154,6 +154,7 @@
       return result
     }
     console.log(
+      'treeFindMultiPath',
       treeFindMultiPath(tree, node => ['1-2', '2-1'].includes(node.id))
     )
   </script>
